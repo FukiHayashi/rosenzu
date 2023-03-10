@@ -9,7 +9,7 @@ var _ = Service("rosenzu", func() {
 	Error("Unauthorized")
 	Error("BadRequest")
 
-	Method("line", func() {
+	Method("find", func() {
 		// ペイロードの定義
 		Payload(func() {
 			Attribute("id", String, func() {

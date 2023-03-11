@@ -1,0 +1,208 @@
+swagger: "2.0"
+info:
+    title: rosenzu Example
+    description: 路線図を書くためのデータ
+    version: v1
+host: localhost:8000
+consumes:
+    - application/json
+    - application/xml
+    - application/gob
+produces:
+    - application/json
+    - application/xml
+    - application/gob
+paths:
+    /line/{name}:
+        get:
+            tags:
+                - rosenzu
+            summary: find rosenzu
+            operationId: rosenzu#find
+            parameters:
+                - name: name
+                  in: path
+                  description: 路線名
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        $ref: '#/definitions/RosenzuFindResponseBody'
+            schemes:
+                - http
+definitions:
+    CoordinateResponseBody:
+        title: 'Mediatype identifier: application/vnd.coordinate+json; view=default'
+        type: object
+        properties:
+            latitude:
+                type: number
+                description: 経度
+                example: 138.854723
+                format: float
+            longitude:
+                type: number
+                description: 緯度
+                example: 37.446707
+                format: float
+        description: CoordinateResponseBody result type (default view)
+        example:
+            latitude: 138.854723
+            longitude: 37.446707
+    CoordinateResponseBodyCollection:
+        title: 'Mediatype identifier: application/vnd.coordinate+json; type=collection; view=default'
+        type: array
+        items:
+            $ref: '#/definitions/CoordinateResponseBody'
+        description: CoordinateCollectionResponseBody is the result type for an array of CoordinateResponseBody (default view)
+        example:
+            - latitude: 138.854723
+              longitude: 37.446707
+            - latitude: 138.854723
+              longitude: 37.446707
+            - latitude: 138.854723
+              longitude: 37.446707
+            - latitude: 138.854723
+              longitude: 37.446707
+    ElementResponseBody:
+        title: 'Mediatype identifier: application/vnd.element+json; view=default'
+        type: object
+        properties:
+            coordinates:
+                $ref: '#/definitions/CoordinateResponseBodyCollection'
+        description: ElementResponseBody result type (default view)
+        example:
+            coordinates:
+                - latitude: 138.854723
+                  longitude: 37.446707
+                - latitude: 138.854723
+                  longitude: 37.446707
+    ElementResponseBodyCollection:
+        title: 'Mediatype identifier: application/vnd.element+json; type=collection; view=default'
+        type: array
+        items:
+            $ref: '#/definitions/ElementResponseBody'
+        description: ElementCollectionResponseBody is the result type for an array of ElementResponseBody (default view)
+        example:
+            - coordinates:
+                - latitude: 138.854723
+                  longitude: 37.446707
+                - latitude: 138.854723
+                  longitude: 37.446707
+            - coordinates:
+                - latitude: 138.854723
+                  longitude: 37.446707
+                - latitude: 138.854723
+                  longitude: 37.446707
+    OperationalpointResponseBody:
+        title: 'Mediatype identifier: application/vnd.operationalpoint+json; view=default'
+        type: object
+        properties:
+            elementID:
+                type: integer
+                description: elementID
+                example: 1
+                format: int64
+            name:
+                type: string
+                description: バス停名
+                example: バス停名
+        description: OperationalpointResponseBody result type (default view)
+        example:
+            elementID: 1
+            name: バス停名
+    OperationalpointResponseBodyCollection:
+        title: 'Mediatype identifier: application/vnd.operationalpoint+json; type=collection; view=default'
+        type: array
+        items:
+            $ref: '#/definitions/OperationalpointResponseBody'
+        description: OperationalpointCollectionResponseBody is the result type for an array of OperationalpointResponseBody (default view)
+        example:
+            - elementID: 1
+              name: バス停名
+            - elementID: 1
+              name: バス停名
+            - elementID: 1
+              name: バス停名
+    RelationResponseBody:
+        title: 'Mediatype identifier: application/vnd.relation+json; view=default'
+        type: object
+        properties:
+            elementA:
+                type: integer
+                description: elementA
+                example: 1
+                format: int64
+            elementB:
+                type: integer
+                description: elementB
+                example: 2
+                format: int64
+        description: RelationResponseBody result type (default view)
+        example:
+            elementA: 1
+            elementB: 2
+    RelationResponseBodyCollection:
+        title: 'Mediatype identifier: application/vnd.relation+json; type=collection; view=default'
+        type: array
+        items:
+            $ref: '#/definitions/RelationResponseBody'
+        description: RelationCollectionResponseBody is the result type for an array of RelationResponseBody (default view)
+        example:
+            - elementA: 1
+              elementB: 2
+            - elementA: 1
+              elementB: 2
+    RosenzuFindResponseBody:
+        title: 'Mediatype identifier: application/vnd.line+json; view=default'
+        type: object
+        properties:
+            elements:
+                $ref: '#/definitions/ElementResponseBodyCollection'
+            name:
+                type: string
+                description: 路線名
+                example: 路線名
+            operationalPoints:
+                $ref: '#/definitions/OperationalpointResponseBodyCollection'
+            relations:
+                $ref: '#/definitions/RelationResponseBodyCollection'
+        description: FindResponseBody result type (default view)
+        example:
+            elements:
+                - coordinates:
+                    - latitude: 138.854723
+                      longitude: 37.446707
+                    - latitude: 138.854723
+                      longitude: 37.446707
+                - coordinates:
+                    - latitude: 138.854723
+                      longitude: 37.446707
+                    - latitude: 138.854723
+                      longitude: 37.446707
+                - coordinates:
+                    - latitude: 138.854723
+                      longitude: 37.446707
+                    - latitude: 138.854723
+                      longitude: 37.446707
+            name: 路線名
+            operationalPoints:
+                - elementID: 1
+                  name: バス停名
+                - elementID: 1
+                  name: バス停名
+                - elementID: 1
+                  name: バス停名
+                - elementID: 1
+                  name: バス停名
+            relations:
+                - elementA: 1
+                  elementB: 2
+                - elementA: 1
+                  elementB: 2
+                - elementA: 1
+                  elementB: 2
+                - elementA: 1
+                  elementB: 2

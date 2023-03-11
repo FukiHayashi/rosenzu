@@ -10,9 +10,12 @@ import (
 	"os"
 	"os/signal"
 	rosenzuapi "rosenzu"
+	"rosenzu/database"
 	rosenzu "rosenzu/gen/rosenzu"
 	"sync"
 	"syscall"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -66,6 +69,16 @@ func main() {
 
 	var wg sync.WaitGroup
 	ctx, cancel := context.WithCancel(context.Background())
+
+	// load .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	} else {
+		log.Println("LOAD .env file")
+	}
+	// connect to DB
+	database.SetupDb()
 
 	// Start the servers and send errors (if any) to the error channel.
 	switch *hostF {

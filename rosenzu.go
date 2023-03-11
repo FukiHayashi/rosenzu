@@ -18,7 +18,8 @@ func NewRosenzu(logger *log.Logger) rosenzu.Service {
 }
 
 // Find implements find.
-func (s *rosenzusrvc) Find(ctx context.Context, p *rosenzu.FindPayload) (res int, err error) {
+func (s *rosenzusrvc) Find(ctx context.Context, p *rosenzu.FindPayload) (res *rosenzu.Line, err error) {
+	res = &rosenzu.Line{}
 	s.logger.Print("rosenzu.find")
 	return
 }

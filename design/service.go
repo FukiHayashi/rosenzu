@@ -1,6 +1,8 @@
 package design
 
 import (
+	"rosenzu/design/response"
+
 	. "goa.design/goa/v3/dsl"
 )
 
@@ -12,16 +14,16 @@ var _ = Service("rosenzu", func() {
 	Method("find", func() {
 		// ペイロードの定義
 		Payload(func() {
-			Attribute("id", String, func() {
-				Description("id")
+			Attribute("name", String, func() {
+				Description("路線名")
 			})
-			Required("id")
+			Required("name")
 		})
 		// 返却値
-		Result(Int)
+		Result(response.Line)
 		// HTTPトランスポートの定義
 		HTTP(func() {
-			GET("/line/{id}")
+			GET("/line/{name}")
 			Response(StatusOK)
 		})
 	})

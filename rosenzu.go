@@ -3,6 +3,8 @@ package rosenzuapi
 import (
 	"context"
 	"log"
+	"rosenzu/database/cast"
+	"rosenzu/database/repository"
 	rosenzu "rosenzu/gen/rosenzu"
 )
 
@@ -19,7 +21,8 @@ func NewRosenzu(logger *log.Logger) rosenzu.Service {
 
 // Find implements find.
 func (s *rosenzusrvc) Find(ctx context.Context, p *rosenzu.FindPayload) (res *rosenzu.Line, err error) {
-	res = &rosenzu.Line{}
+	var line = repository.FindLine(p.Name)
+	res = cast.CastedLine(line)
 	s.logger.Print("rosenzu.find")
 	return
 }

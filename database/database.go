@@ -3,6 +3,7 @@ package database
 import (
 	"log"
 	"os"
+	"rosenzu/database/model"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -20,4 +21,6 @@ func SetupDb() {
 	} else {
 		log.Println("CONNECTED TO DB")
 	}
+	Db.AutoMigrate(&model.Line{}, &model.Element{}, &model.Relation{}, &model.Coordinate{}, &model.OperationalPoint{})
+	DbSeed()
 }

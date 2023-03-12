@@ -11,16 +11,93 @@ import (
 func DbSeed() {
 	var line model.Line
 	if err := Db.First(&line).Error; err != nil {
+		// 各テーブルを生成
 		initLines()
 		initElements()
 		initRelations()
 		initOperationalPoints()
+		// 各アソシエーションテーブルを生成
+		initLineElements()
+		initLineRelations()
+		initLineOperationalPoints()
 	}
 }
 
+// Line-OperationalPointsのアソシエーションを生成
+func initLineOperationalPoints() {
+	var lines []model.Line
+	Db.Find(&lines)
+	rows := loadCSV("./database/csv/operationalpoints.csv")
+	for _, row := range rows {
+		if row[0] != "" {
+			var op model.OperationalPoint
+			if err := Db.Where("name = ?", row[1]).First(&op).Error; err == nil {
+				for _, line := range lines {
+					for j := 2; j < len(row); j++ {
+						line_id, _ := strconv.Atoi(row[j])
+						if line_id == line.ID {
+							Db.Model(&line).Association("OperationalPoints").Append(&op)
+						}
+					}
+				}
+			}
+		}
+	}
+	Db.Save(&lines)
+}
+
+// Line-Relationsのアソシエーションを生成
+func initLineRelations() {
+	var lines []model.Line
+	Db.Find(&lines)
+	rows := loadCSV("./database/csv/relations.csv")
+	for _, row := range rows {
+		if row[0] != "" {
+			relation_id, _ := strconv.Atoi(row[0])
+			var relation model.Relation
+			if err := Db.Where("id = ?", relation_id).First(&relation).Error; err == nil {
+				for _, line := range lines {
+					for j := 2; j < len(row); j++ {
+						line_id, _ := strconv.Atoi(row[j])
+						if line_id == line.ID {
+							Db.Model(&line).Association("Relations").Append(&relation)
+						}
+					}
+				}
+			}
+		}
+	}
+	Db.Save(&lines)
+}
+
+// Line-Elementsのアソシエーションを生成
+func initLineElements() {
+	var lines []model.Line
+	Db.Find(&lines)
+	rows := loadCSV("./database/csv/elements.csv")
+	for _, row := range rows {
+		if row[0] != "" {
+			element_id, _ := strconv.Atoi(row[0])
+			var element model.Element
+			if err := Db.Where("id = ?", element_id).First(&element).Error; err == nil {
+				for _, line := range lines {
+					for j := 4; j < len(row); j++ {
+						line_id, _ := strconv.Atoi(row[j])
+						if line_id == line.ID {
+							Db.Model(&line).Association("Elements").Append(&element)
+						}
+					}
+				}
+			}
+		}
+	}
+	Db.Save(&lines)
+}
+
+// OperationalPointのシードを読み込み
 func initOperationalPoints() {
 	ops := []model.OperationalPoint{}
-	rows := loadCSV("./csv/elements.csv")
+	rows := loadCSV("./database/csv/operationalpoints.csv")
 	for _, row := range rows {
 		if row[0] != "" {
 			element_id, _ := strconv.Atoi(row[0])
@@ -31,12 +108,13 @@ func initOperationalPoints() {
 			ops = append(ops, op)
 		}
 	}
-	Db.Save(ops)
+	Db.Save(&ops)
 }
 
+// Relationのシードを読み込み
 func initRelations() {
 	relations := []model.Relation{}
-	rows := loadCSV("./csv/elements.csv")
+	rows := loadCSV("./database/csv/relations.csv")
 	for _, row := range rows {
 		if row[0] != "" {
 			a, _ := strconv.Atoi(row[0])
@@ -48,12 +126,13 @@ func initRelations() {
 			relations = append(relations, relation)
 		}
 	}
-	Db.Save(relations)
+	Db.Save(&relations)
 }
 
+// Elementのシードを読み込み
 func initElements() {
 	elements := []model.Element{}
-	rows := loadCSV("./csv/elements.csv")
+	rows := loadCSV("./database/csv/elements.csv")
 	for i, row := range rows {
 		if row[0] != "" {
 			if i == 0 {
@@ -63,14 +142,15 @@ func initElements() {
 			coordinate := newCoordinate(row[1], row[2])
 			elements[len(elements)-1].Coordinates = append(elements[len(elements)-1].Coordinates, coordinate)
 
-			if row[4] != "" {
+			if row[4] != "" && i != 0 {
 				elements = append(elements, newElement(row[0]))
 			}
 		}
 	}
-	Db.Save(elements)
+	Db.Save(&elements)
 }
 
+// Elementを生成
 func newElement(istr string) model.Element {
 	id, _ := strconv.Atoi(istr)
 	element := model.Element{
@@ -79,6 +159,7 @@ func newElement(istr string) model.Element {
 	return element
 }
 
+// Coordinateを生成
 func newCoordinate(long string, lat string) model.Coordinate {
 	longitude, _ := strconv.ParseFloat(long, 32)
 	latitude, _ := strconv.ParseFloat(lat, 32)
@@ -89,9 +170,10 @@ func newCoordinate(long string, lat string) model.Coordinate {
 	return coordinate
 }
 
+// Lineのシードを読み込み
 func initLines() {
 	lines := []model.Line{}
-	rows := loadCSV("./csv/lines.csv")
+	rows := loadCSV("./database/csv/lines.csv")
 	for _, row := range rows {
 		if row[0] != "" {
 			id, _ := strconv.Atoi(row[0])
@@ -102,7 +184,7 @@ func initLines() {
 			lines = append(lines, line)
 		}
 	}
-	Db.Save(lines)
+	Db.Save(&lines)
 }
 
 // csv読み込み

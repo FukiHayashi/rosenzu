@@ -14,12 +14,14 @@ import (
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the rosenzu service endpoint HTTP handlers.
 type Server struct {
 	Mounts []*MountPoint
 	Find   http.Handler
+	CORS   http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -50,8 +52,10 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"Find", "GET", "/line/{name}"},
+			{"CORS", "OPTIONS", "/line/{name}"},
 		},
 		Find: NewFindHandler(e.Find, mux, decoder, encoder, errhandler, formatter),
+		CORS: NewCORSHandler(),
 	}
 }
 
@@ -61,6 +65,7 @@ func (s *Server) Service() string { return "rosenzu" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Find = m(s.Find)
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -69,6 +74,7 @@ func (s *Server) MethodNames() []string { return rosenzu.MethodNames[:] }
 // Mount configures the mux to serve the rosenzu endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountFindHandler(mux, h.Find)
+	MountCORSHandler(mux, h.CORS)
 }
 
 // Mount configures the mux to serve the rosenzu endpoints.
@@ -79,7 +85,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountFindHandler configures the mux to serve the "rosenzu" service "find"
 // endpoint.
 func MountFindHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleRosenzuOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -124,5 +130,47 @@ func NewFindHandler(
 		if err := encodeResponse(ctx, w, res); err != nil {
 			errhandler(ctx, w, err)
 		}
+	})
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service rosenzu.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleRosenzuOrigin(h)
+	mux.Handle("OPTIONS", "/line/{name}", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleRosenzuOrigin applies the CORS response headers corresponding to the
+// origin for the service rosenzu.
+func HandleRosenzuOrigin(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOrigin(origin, "*") {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Expose-Headers", "Content-Type, Origin")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET")
+				w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
 	})
 }

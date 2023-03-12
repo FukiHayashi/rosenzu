@@ -36,7 +36,7 @@ func initLineOperationalPoints() {
 					for j := 2; j < len(row); j++ {
 						line_id, _ := strconv.Atoi(row[j])
 						if line_id == line.ID {
-							Db.Model(&line).Association("OperationalPoints").Append(&op)
+							Db.Model(&line).Association("OperationalPoints").Append(&model.OperationalPoint{ID: op.ID})
 						}
 					}
 				}

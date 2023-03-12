@@ -12,7 +12,7 @@ type Line struct {
 	Name              string             `gorm:"unique"`
 	Elements          []Element          `gorm:"many2many:line_elements"`
 	Relations         []Relation         `gorm:"many2many:line_relations"`
-	OpelationalPoints []OperationalPoint `gorm:"many2many:line_opelationalpoints"`
+	OperationalPoints []OperationalPoint `gorm:"many2many:line_operationalpoints"`
 	CreatedAt         time.Time
 	UpdatedAt         time.Time
 	DeletedAt         gorm.DeletedAt `gorm:"index"`

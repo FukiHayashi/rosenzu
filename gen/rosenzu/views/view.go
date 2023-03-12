@@ -86,12 +86,14 @@ var (
 	// ElementCollection by view name.
 	ElementCollectionMap = map[string][]string{
 		"default": {
+			"id",
 			"coordinates",
 		},
 	}
 	// ElementMap is a map indexing the attribute names of Element by view name.
 	ElementMap = map[string][]string{
 		"default": {
+			"id",
 			"coordinates",
 		},
 	}

@@ -28,6 +28,8 @@ type ElementResponseBodyCollection []*ElementResponseBody
 
 // ElementResponseBody is used to define fields on response body types.
 type ElementResponseBody struct {
+	// id
+	ID          *int                             `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Coordinates CoordinateResponseBodyCollection `form:"coordinates,omitempty" json:"coordinates,omitempty" xml:"coordinates,omitempty"`
 }
 

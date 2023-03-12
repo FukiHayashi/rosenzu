@@ -72,6 +72,11 @@ definitions:
         properties:
             coordinates:
                 $ref: '#/definitions/CoordinateResponseBodyCollection'
+            id:
+                type: integer
+                description: id
+                example: 1
+                format: int64
         description: ElementResponseBody result type (default view)
         example:
             coordinates:
@@ -79,6 +84,7 @@ definitions:
                   longitude: 37.446707
                 - latitude: 138.854723
                   longitude: 37.446707
+            id: 1
     ElementResponseBodyCollection:
         title: 'Mediatype identifier: application/vnd.element+json; type=collection; view=default'
         type: array
@@ -91,11 +97,13 @@ definitions:
                   longitude: 37.446707
                 - latitude: 138.854723
                   longitude: 37.446707
+              id: 1
             - coordinates:
                 - latitude: 138.854723
                   longitude: 37.446707
                 - latitude: 138.854723
                   longitude: 37.446707
+              id: 1
     OperationalpointResponseBody:
         title: 'Mediatype identifier: application/vnd.operationalpoint+json; view=default'
         type: object
@@ -177,16 +185,19 @@ definitions:
                       longitude: 37.446707
                     - latitude: 138.854723
                       longitude: 37.446707
+                  id: 1
                 - coordinates:
                     - latitude: 138.854723
                       longitude: 37.446707
                     - latitude: 138.854723
                       longitude: 37.446707
+                  id: 1
                 - coordinates:
                     - latitude: 138.854723
                       longitude: 37.446707
                     - latitude: 138.854723
                       longitude: 37.446707
+                  id: 1
             name: 路線名
             operationalPoints:
                 - elementID: 1

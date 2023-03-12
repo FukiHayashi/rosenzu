@@ -49,7 +49,9 @@ func marshalRosenzuviewsElementViewToElementResponseBody(v *rosenzuviews.Element
 	if v == nil {
 		return nil
 	}
-	res := &ElementResponseBody{}
+	res := &ElementResponseBody{
+		ID: v.ID,
+	}
 	if v.Coordinates != nil {
 		res.Coordinates = make([]*CoordinateResponseBody, len(v.Coordinates))
 		for i, val := range v.Coordinates {

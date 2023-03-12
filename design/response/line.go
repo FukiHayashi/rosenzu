@@ -29,6 +29,7 @@ var Element = ResultType("application/vnd.element+json", func() {
 		Attribute("coordinates", CollectionOf(Coordinate))
 	})
 	View("default", func() {
+		Attribute("id")
 		Attribute("coordinates")
 	})
 })

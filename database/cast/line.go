@@ -10,9 +10,10 @@ import (
 // goaのLine型にキャスト
 func CastedLine(line model.Line) *rosenzu.Line {
 	casted_line := rosenzu.Line{
-		Name:      &line.Name,
-		Elements:  CastedElements(line.Elements),
-		Relations: CastedRelations(line.Relations),
+		Name:              &line.Name,
+		Elements:          CastedElements(line.Elements),
+		Relations:         CastedRelations(line.Relations),
+		OperationalPoints: CastedOperationalpoints(line.OperationalPoints),
 	}
 	return &casted_line
 }
@@ -65,7 +66,8 @@ func CastedElements(elements []model.Element) rosenzu.ElementCollection {
 // goaのElement型にキャスト
 func CastedElement(element model.Element) *rosenzu.Element {
 	casted_element := rosenzu.Element{
-		ID: &element.ID,
+		ID:          &element.ID,
+		Coordinates: CastedCoordinates(element.Coordinates),
 	}
 	return &casted_element
 }

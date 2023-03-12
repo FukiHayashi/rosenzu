@@ -165,7 +165,9 @@ func newElementCollectionView(res ElementCollection) rosenzuviews.ElementCollect
 
 // newElement converts projected type Element to service type Element.
 func newElement(vres *rosenzuviews.ElementView) *Element {
-	res := &Element{}
+	res := &Element{
+		ID: vres.ID,
+	}
 	if vres.Coordinates != nil {
 		res.Coordinates = newCoordinateCollection(vres.Coordinates)
 	}
@@ -175,7 +177,9 @@ func newElement(vres *rosenzuviews.ElementView) *Element {
 // newElementView projects result type Element to projected type ElementView
 // using the "default" view.
 func newElementView(res *Element) *rosenzuviews.ElementView {
-	vres := &rosenzuviews.ElementView{}
+	vres := &rosenzuviews.ElementView{
+		ID: res.ID,
+	}
 	if res.Coordinates != nil {
 		vres.Coordinates = newCoordinateCollectionView(res.Coordinates)
 	}

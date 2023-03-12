@@ -41,7 +41,7 @@ type CoordinateCollection []*Coordinate
 
 type Element struct {
 	// id
-	ID          *int
+	ID          *uint
 	Coordinates CoordinateCollection
 }
 
@@ -66,16 +66,16 @@ type Operationalpoint struct {
 	// バス停名
 	Name *string
 	// elementID
-	ElementID *int
+	ElementID *uint
 }
 
 type OperationalpointCollection []*Operationalpoint
 
 type Relation struct {
 	// elementA
-	ElementA *int
+	ElementA *uint
 	// elementB
-	ElementB *int
+	ElementB *uint
 }
 
 type RelationCollection []*Relation

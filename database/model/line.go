@@ -8,7 +8,7 @@ import (
 
 // 路線
 type Line struct {
-	ID                int                `gorm:"primaryKey"`
+	ID                uint               `gorm:"primaryKey"`
 	Name              string             `gorm:"unique"`
 	Elements          []Element          `gorm:"many2many:line_elements"`
 	Relations         []Relation         `gorm:"many2many:line_relations"`
@@ -20,7 +20,7 @@ type Line struct {
 
 // 要素
 type Element struct {
-	ID          int `gorm:"primaryKey"`
+	ID          uint `gorm:"primaryKey"`
 	Coordinates []Coordinate
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
@@ -28,8 +28,8 @@ type Element struct {
 }
 
 type Coordinate struct {
-	ID        int `gorm:"primaryKey"`
-	ElementID int
+	ID        uint `gorm:"primaryKey"`
+	ElementID uint
 	Longitude float32 // 緯度
 	Latitude  float32 // 経度
 	CreatedAt time.Time
@@ -39,9 +39,9 @@ type Coordinate struct {
 
 // 繋がり
 type Relation struct {
-	ID        int `gorm:"primaryKey"`
-	ElementA  int
-	ElementB  int
+	ID        uint `gorm:"primaryKey"`
+	ElementA  uint
+	ElementB  uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -49,9 +49,9 @@ type Relation struct {
 
 // バス停
 type OperationalPoint struct {
-	ID        int `gorm:"primaryKey"`
+	ID        uint `gorm:"primaryKey"`
 	Name      string
-	ElementID int
+	ElementID uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`

@@ -23,7 +23,7 @@ var Line = ResultType("application/vnd.line+json", func() {
 
 var Element = ResultType("application/vnd.element+json", func() {
 	Attributes(func() {
-		Attribute("id", Int, "id", func() {
+		Attribute("id", UInt, "id", func() {
 			Example(1)
 		})
 		Attribute("coordinates", CollectionOf(Coordinate))
@@ -51,10 +51,10 @@ var Coordinate = ResultType("application/vnd.coordinate+json", func() {
 
 var Relation = ResultType("application/vnd.relation+json", func() {
 	Attributes(func() {
-		Attribute("elementA", Int, "elementA", func() {
+		Attribute("elementA", UInt, "elementA", func() {
 			Example(1)
 		})
-		Attribute("elementB", Int, "elementB", func() {
+		Attribute("elementB", UInt, "elementB", func() {
 			Example(2)
 		})
 	})
@@ -69,7 +69,7 @@ var OpelationalPoint = ResultType("application/vnd.operationalpoint+json", func(
 		Attribute("name", String, "バス停名", func() {
 			Example("バス停名")
 		})
-		Attribute("elementID", Int, "elementID", func() {
+		Attribute("elementID", UInt, "elementID", func() {
 			Example(1)
 		})
 	})

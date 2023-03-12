@@ -102,7 +102,6 @@ components:
                     type: integer
                     description: id
                     example: 1
-                    format: int64
             example:
                 coordinates:
                     - latitude: 138.854723
@@ -204,7 +203,6 @@ components:
                     type: integer
                     description: elementID
                     example: 1
-                    format: int64
                 name:
                     type: string
                     description: バス停名
@@ -232,12 +230,10 @@ components:
                     type: integer
                     description: elementA
                     example: 1
-                    format: int64
                 elementB:
                     type: integer
                     description: elementB
                     example: 2
-                    format: int64
             example:
                 elementA: 1
                 elementB: 2

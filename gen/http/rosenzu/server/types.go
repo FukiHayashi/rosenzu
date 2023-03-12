@@ -29,7 +29,7 @@ type ElementResponseBodyCollection []*ElementResponseBody
 // ElementResponseBody is used to define fields on response body types.
 type ElementResponseBody struct {
 	// id
-	ID          *int                             `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID          *uint                            `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Coordinates CoordinateResponseBodyCollection `form:"coordinates,omitempty" json:"coordinates,omitempty" xml:"coordinates,omitempty"`
 }
 
@@ -52,9 +52,9 @@ type RelationResponseBodyCollection []*RelationResponseBody
 // RelationResponseBody is used to define fields on response body types.
 type RelationResponseBody struct {
 	// elementA
-	ElementA *int `form:"elementA,omitempty" json:"elementA,omitempty" xml:"elementA,omitempty"`
+	ElementA *uint `form:"elementA,omitempty" json:"elementA,omitempty" xml:"elementA,omitempty"`
 	// elementB
-	ElementB *int `form:"elementB,omitempty" json:"elementB,omitempty" xml:"elementB,omitempty"`
+	ElementB *uint `form:"elementB,omitempty" json:"elementB,omitempty" xml:"elementB,omitempty"`
 }
 
 // OperationalpointResponseBodyCollection is used to define fields on response
@@ -66,7 +66,7 @@ type OperationalpointResponseBody struct {
 	// バス停名
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// elementID
-	ElementID *int `form:"elementID,omitempty" json:"elementID,omitempty" xml:"elementID,omitempty"`
+	ElementID *uint `form:"elementID,omitempty" json:"elementID,omitempty" xml:"elementID,omitempty"`
 }
 
 // NewFindResponseBody builds the HTTP response body from the result of the

@@ -34,7 +34,7 @@ type ElementCollectionView []*ElementView
 // ElementView is a type that runs validations on a projected type.
 type ElementView struct {
 	// id
-	ID          *int
+	ID          *uint
 	Coordinates CoordinateCollectionView
 }
 
@@ -55,9 +55,9 @@ type RelationCollectionView []*RelationView
 // RelationView is a type that runs validations on a projected type.
 type RelationView struct {
 	// elementA
-	ElementA *int
+	ElementA *uint
 	// elementB
-	ElementB *int
+	ElementB *uint
 }
 
 // OperationalpointCollectionView is a type that runs validations on a
@@ -69,7 +69,7 @@ type OperationalpointView struct {
 	// バス停名
 	Name *string
 	// elementID
-	ElementID *int
+	ElementID *uint
 }
 
 var (

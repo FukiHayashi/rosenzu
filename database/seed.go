@@ -34,8 +34,8 @@ func initLineOperationalPoints() {
 			if err := Db.Where("name = ?", row[1]).First(&op).Error; err == nil {
 				for _, line := range lines {
 					for j := 2; j < len(row); j++ {
-						line_id, _ := strconv.Atoi(row[j])
-						if line_id == line.ID {
+						line_id, _ := strconv.ParseUint(row[j], 10, 32)
+						if uint(line_id) == line.ID {
 							Db.Model(&line).Association("OperationalPoints").Append(&model.OperationalPoint{ID: op.ID})
 						}
 					}
@@ -58,8 +58,8 @@ func initLineRelations() {
 			if err := Db.Where("id = ?", relation_id).First(&relation).Error; err == nil {
 				for _, line := range lines {
 					for j := 2; j < len(row); j++ {
-						line_id, _ := strconv.Atoi(row[j])
-						if line_id == line.ID {
+						line_id, _ := strconv.ParseUint(row[j], 10, 32)
+						if uint(line_id) == line.ID {
 							Db.Model(&line).Association("Relations").Append(&relation)
 						}
 					}
@@ -82,8 +82,8 @@ func initLineElements() {
 			if err := Db.Where("id = ?", element_id).First(&element).Error; err == nil {
 				for _, line := range lines {
 					for j := 4; j < len(row); j++ {
-						line_id, _ := strconv.Atoi(row[j])
-						if line_id == line.ID {
+						line_id, _ := strconv.ParseUint(row[j], 10, 32)
+						if uint(line_id) == line.ID {
 							Db.Model(&line).Association("Elements").Append(&element)
 						}
 					}
@@ -100,10 +100,10 @@ func initOperationalPoints() {
 	rows := loadCSV("./database/csv/operationalpoints.csv")
 	for _, row := range rows {
 		if row[0] != "" {
-			element_id, _ := strconv.Atoi(row[0])
+			element_id, _ := strconv.ParseUint(row[0], 10, 32)
 			op := model.OperationalPoint{
 				Name:      row[1],
-				ElementID: element_id,
+				ElementID: uint(element_id),
 			}
 			ops = append(ops, op)
 		}
@@ -117,11 +117,11 @@ func initRelations() {
 	rows := loadCSV("./database/csv/relations.csv")
 	for _, row := range rows {
 		if row[0] != "" {
-			a, _ := strconv.Atoi(row[0])
-			b, _ := strconv.Atoi(row[1])
+			a, _ := strconv.ParseUint(row[0], 10, 32)
+			b, _ := strconv.ParseUint(row[1], 10, 32)
 			relation := model.Relation{
-				ElementA: a,
-				ElementB: b,
+				ElementA: uint(a),
+				ElementB: uint(b),
 			}
 			relations = append(relations, relation)
 		}
@@ -152,9 +152,9 @@ func initElements() {
 
 // Elementを生成
 func newElement(istr string) model.Element {
-	id, _ := strconv.Atoi(istr)
+	id, _ := strconv.ParseUint(istr, 10, 32)
 	element := model.Element{
-		ID: id,
+		ID: uint(id),
 	}
 	return element
 }
@@ -176,9 +176,9 @@ func initLines() {
 	rows := loadCSV("./database/csv/lines.csv")
 	for _, row := range rows {
 		if row[0] != "" {
-			id, _ := strconv.Atoi(row[0])
+			id, _ := strconv.ParseUint(row[0], 10, 32)
 			line := model.Line{
-				ID:   id,
+				ID:   uint(id),
 				Name: row[1],
 			}
 			lines = append(lines, line)

@@ -13,7 +13,7 @@ var _ = API("rosenzu", func() {
 	// サーバ定義
 	Server("rosenzu", func() {
 		Host("localhost", func() {
-			URI("http://localhost:8000/api/v1") // HTTP REST API
+			URI("http://localhost:8000") // HTTP REST API
 		})
 	})
 })

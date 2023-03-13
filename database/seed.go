@@ -34,9 +34,11 @@ func initLineOperationalPoints() {
 			if err := Db.Where("name = ?", row[1]).First(&op).Error; err == nil {
 				for _, line := range lines {
 					for j := 2; j < len(row); j++ {
-						line_id, _ := strconv.ParseUint(row[j], 10, 32)
-						if uint(line_id) == line.ID {
-							Db.Model(&line).Association("OperationalPoints").Append(&model.OperationalPoint{ID: op.ID})
+						if row[j] != "" {
+							line_id, _ := strconv.ParseUint(row[j], 10, 32)
+							if uint(line_id) == line.ID {
+								Db.Model(&line).Association("OperationalPoints").Append(&model.OperationalPoint{ID: op.ID})
+							}
 						}
 					}
 				}
@@ -58,9 +60,11 @@ func initLineRelations() {
 			if err := Db.Where("id = ?", relation_id).First(&relation).Error; err == nil {
 				for _, line := range lines {
 					for j := 2; j < len(row); j++ {
-						line_id, _ := strconv.ParseUint(row[j], 10, 32)
-						if uint(line_id) == line.ID {
-							Db.Model(&line).Association("Relations").Append(&relation)
+						if row[j] != "" {
+							line_id, _ := strconv.ParseUint(row[j], 10, 32)
+							if uint(line_id) == line.ID {
+								Db.Model(&line).Association("Relations").Append(&relation)
+							}
 						}
 					}
 				}
@@ -82,9 +86,11 @@ func initLineElements() {
 			if err := Db.Where("id = ?", element_id).First(&element).Error; err == nil {
 				for _, line := range lines {
 					for j := 4; j < len(row); j++ {
-						line_id, _ := strconv.ParseUint(row[j], 10, 32)
-						if uint(line_id) == line.ID {
-							Db.Model(&line).Association("Elements").Append(&element)
+						if row[j] != "" {
+							line_id, _ := strconv.ParseUint(row[j], 10, 32)
+							if uint(line_id) == line.ID {
+								Db.Model(&line).Association("Elements").Append(&element)
+							}
 						}
 					}
 				}
@@ -138,11 +144,6 @@ func initElements() {
 			if row[4] != "" {
 				elements = append(elements, newElement(row[0]))
 			}
-			/*
-				if i == 0 {
-					elements = append(elements, newElement(row[0]))
-				}
-			*/
 			// 座標を追加
 			coordinate := newCoordinate(row[1], row[2])
 			elements[len(elements)-1].Coordinates = append(elements[len(elements)-1].Coordinates, coordinate)

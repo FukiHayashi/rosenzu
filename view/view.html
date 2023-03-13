@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+         <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+        <title>map</title>
+    </head>
+    <body>
+        <div id='map' style='width: 640px; height: 480px;'></div>
+        <form>
+            <select onchange="ReDrawMap([37.440888,138.869906],this.value)">
+                <option value="悠久山線">悠久山線</option>
+                <option value="悠久山線-試">悠久山線[試]</option>
+            </select>
+        </form>
+    </body>
+    <script src="./leaflet_func.js"></script>
+    <script src="./draw_map.js"></script>
+    <script>
+        
+    </script>
+</html>

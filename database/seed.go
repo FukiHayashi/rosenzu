@@ -133,18 +133,19 @@ func initRelations() {
 func initElements() {
 	elements := []model.Element{}
 	rows := loadCSV("./database/csv/elements.csv")
-	for i, row := range rows {
+	for _, row := range rows {
 		if row[0] != "" {
-			if i == 0 {
+			if row[4] != "" {
 				elements = append(elements, newElement(row[0]))
 			}
+			/*
+				if i == 0 {
+					elements = append(elements, newElement(row[0]))
+				}
+			*/
 			// 座標を追加
 			coordinate := newCoordinate(row[1], row[2])
 			elements[len(elements)-1].Coordinates = append(elements[len(elements)-1].Coordinates, coordinate)
-
-			if row[4] != "" && i != 0 {
-				elements = append(elements, newElement(row[0]))
-			}
 		}
 	}
 	Db.Save(&elements)

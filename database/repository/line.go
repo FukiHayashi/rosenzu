@@ -12,7 +12,7 @@ import (
 func FindLine(name string) model.Line {
 	var line model.Line
 	if err := database.Db.Preload(clause.Associations).Preload("Elements.Coordinates").Where("name = ?", name).First(&line).Error; err != nil {
-		log.Fatal("Not Found Line")
+		log.Println("Not Found Line")
 	}
 	return line
 }

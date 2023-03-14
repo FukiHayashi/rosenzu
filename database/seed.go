@@ -53,9 +53,9 @@ func initLineRelations() {
 	var lines []model.Line
 	Db.Find(&lines)
 	rows := loadCSV("./database/csv/relations.csv")
-	for _, row := range rows {
+	for i, row := range rows {
 		if row[0] != "" {
-			relation_id, _ := strconv.Atoi(row[0])
+			relation_id := i + 1 //, _ := strconv.Atoi(row[0])
 			var relation model.Relation
 			if err := Db.Where("id = ?", relation_id).First(&relation).Error; err == nil {
 				for _, line := range lines {

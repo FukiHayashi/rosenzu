@@ -1,6 +1,8 @@
+// Geojson型へキャスト
 function getCoordinate(c){
     return [c.latitude,c.longitude]
 }
+// 経路を生成
 function getCoordinates(cs){
     var coordinates = []
     for(let c of cs){
@@ -11,6 +13,7 @@ function getCoordinates(cs){
     }
     return coordinates
 }
+// elementをleafletのFeatureへキャスト
 function getFeature(element){
     return {
         "type": "Feature",
@@ -20,6 +23,7 @@ function getFeature(element){
         }
     }
 }
+// elementsをleafletのFeatureCollectionへキャスト
 function GetFeatures(elements){
     var features = []
     for(let e of elements){
@@ -30,6 +34,7 @@ function GetFeatures(elements){
         "features": features
     }
 }
+// operationalPointの位置を取得
 function GetBusstops(elements, ops){
     var busstops = []
     for(let op of ops){
